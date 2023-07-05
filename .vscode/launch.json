@@ -1,0 +1,121 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'basic-of-rust'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=basic-of-rust"
+                ],
+                "filter": {
+                    "name": "basic-of-rust",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'Rust-Bootcamp-2023'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=Rust-Bootcamp-2023",
+                    "--package=Rust-Bootcamp-2023"
+                ],
+                "filter": {
+                    "name": "Rust-Bootcamp-2023",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'Rust-Bootcamp-2023'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=Rust-Bootcamp-2023",
+                    "--package=Rust-Bootcamp-2023"
+                ],
+                "filter": {
+                    "name": "Rust-Bootcamp-2023",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug integration test 'conditions'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--test=conditions",
+                    "--package=Rust-Bootcamp-2023"
+                ],
+                "filter": {
+                    "name": "conditions",
+                    "kind": "test"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug integration test 'strings'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--test=strings",
+                    "--package=Rust-Bootcamp-2023"
+                ],
+                "filter": {
+                    "name": "strings",
+                    "kind": "test"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug integration test 'functions'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--test=functions",
+                    "--package=Rust-Bootcamp-2023"
+                ],
+                "filter": {
+                    "name": "functions",
+                    "kind": "test"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
