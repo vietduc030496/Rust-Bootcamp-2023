@@ -1,16 +1,18 @@
 // Exercise 1
 // Make it compile
-fn exercise1() {
+pub fn exercise1() {
     // Use as many approaches as you can to make it work
     let x = String::from("hello, world");
-    let y = x;
-    let z = x;
+    let y = &x;
+    let z = &x;
+    println!("y : {}", y);
+    println!("z : {}", z);
 }
 
 // Exercise 2
 // Make it compile
 // Don't modify code in exercise2 function!
-fn exercise2() {
+pub fn exercise2() {
     let s1 = String::from("hello, world");
     let s2 = take_ownership(s1);
 
@@ -18,14 +20,14 @@ fn exercise2() {
 }
 // Only modify the code below!
 fn take_ownership(s: String) -> String {
-    //println!("{}", s);
+    println!("{}", s);
     s
 }
 
 // Exercise 3
 // Make it compile
 // Dont care about logic
-fn exercise3() {
+pub fn exercise3() {
     let values: Vec<f64> = vec![
         2817.42, 2162.17, 3756.57, 2817.42, -2817.42, 946.9, 2817.42, 964.42, 795.43, 3756.57,
         139.34, 903.58, -3756.57, 939.14, 828.04, 1120.04, 604.03, 3354.74, 2748.06, 1470.8,
@@ -42,25 +44,26 @@ fn exercise3() {
         let mut addition: f64 = 0.0;
 
         // Sumar valores en additions
-        for element_index in additions {
+        for &element_index in &additions {
             let addition_aux = values[element_index];
             addition = addition_aux + addition;
         }
+        break;
     }
 }
 
 // Exercise 4
 // Make it compile
-fn exercise4(value: u32) -> &'static str {
+pub fn exercise4(value: u32) -> &'static str {
     let str_value = value.to_string(); // Convert u32 to String
     let str_ref: &str = &str_value; // Obtain a reference to the String
-    str_ref // Return the reference to the String
+    Box::leak(str_ref.to_owned().into_boxed_str()) // Return the reference to the String
 }
 
 // Exercise 5
 // Make it compile
 use std::collections::HashMap;
-fn exercise5() {
+pub fn exercise5() {
     let mut my_map = HashMap::from([(1, "1.0".to_string()), (2, "2.0".to_string())]);
 
     let key = 3;
@@ -69,8 +72,9 @@ fn exercise5() {
         Some(child) => child,
         None => {
             let value = "3.0".to_string();
-            my_map.insert(key, value);
-            &value // HERE IT FAILS
+            let static_value: &'static str = Box::leak(value.into_boxed_str());
+            my_map.insert(key, static_value.to_string());
+            static_value // HERE IT FAILS
         }
     };
 
@@ -81,14 +85,14 @@ fn exercise5() {
 // Make it compile
 
 use std::io;
-
-fn exercise6() {
+pub fn exercise6() {
     let mut prev_key: &str = "";
 
     for line in io::stdin().lines() {
         let s = line.unwrap();
-
-        let data: Vec<&str> = s.split("\t").collect();
+        let owned_s: String = s.to_owned();
+        let static_s: &'static str = Box::leak(owned_s.into_boxed_str());
+        let data: Vec<&str> = static_s.split("\t").collect();
         if prev_key.len() == 0 {
             prev_key = data[0];
         }
@@ -97,19 +101,21 @@ fn exercise6() {
 
 // Exercise 7
 // Make it compile
-fn exercise7() {
-    let mut v: Vec<&str> = Vec::new();
+pub fn exercise7() {
+    let mut v: Vec<&'static str> = Vec::new();
     {
         let chars = [b'x', b'y', b'z'];
         let s: &str = std::str::from_utf8(&chars).unwrap();
-        v.push(&s);
+        let owned_s: String = s.to_owned();
+        let static_s: &'static str = Box::leak(owned_s.into_boxed_str());
+        v.push(static_s);
     }
     println!("{:?}", v);
 }
 
 // Exercise 8
 // Make it compile
-fn exercise8() {
+pub fn exercise8() {
     let mut accounting = vec!["Alice", "Ben"];
     
     loop {
@@ -119,7 +125,8 @@ fn exercise8() {
             .read_line(&mut add_input)
             .expect("Failed to read line");
 
-        let add_vec: Vec<&str> = add_input.trim()[..].split_whitespace().collect();
+        let static_add_input = Box::leak(add_input.into_boxed_str());
+        let add_vec: Vec<&str> = static_add_input.trim()[..].split_whitespace().collect();
 
         if add_vec.len() < 1 {
             println!("Incorrect input, try again");
